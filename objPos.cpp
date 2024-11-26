@@ -22,7 +22,25 @@ objPos::~objPos(){
     delete pos;
 }
 
+objPos& objPos::operator= (const objPos &o){
+    this->pos = new Pos;
+    this->pos->x = o.pos->x;
+    this->pos->y = o.pos->y;
+    this->symbol = o.symbol;
 
+    return *this;
+}
+
+objPos objPos::copy(){
+    objPos copy = objPos();
+    copy.pos->x = pos->x;
+    copy.pos->y = pos->y;
+    copy.symbol = symbol;
+
+    return copy;
+}
+
+// special member functions end here
 
 void objPos::setObjPos(objPos o)
 {
