@@ -1,12 +1,11 @@
 #include <iostream>
 #include "MacUILib.h"
 #include "objPos.h"
+#include "Player.h" //temp including for testing
 
 using namespace std;
 
 #define DELAY_CONST 100000
-
-
 
 bool exitFlag;
 
@@ -42,6 +41,8 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
+    Player myPlayer = 
+
     exitFlag = false;
 }
 
@@ -57,7 +58,8 @@ void RunLogic(void)
 
 void DrawScreen(void)
 {
-    MacUILib_clearScreen();    
+    MacUILib_clearScreen();  
+ 
 }
 
 void LoopDelay(void)
