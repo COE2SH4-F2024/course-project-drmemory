@@ -6,6 +6,8 @@ using namespace std;
 
 #define DELAY_CONST 100000
 
+
+
 bool exitFlag;
 
 void Initialize(void);
@@ -15,7 +17,7 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
-
+char input;
 
 int main(void)
 {
@@ -45,12 +47,12 @@ void Initialize(void)
 
 void GetInput(void)
 {
-   
+
 }
 
 void RunLogic(void)
 {
-    
+
 }
 
 void DrawScreen(void)
