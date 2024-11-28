@@ -21,6 +21,7 @@ objPos::objPos(int xPos, int yPos, char sym)
 
 objPos::~objPos(){
     delete[] &pos;
+    delete pos;
 }
 
 objPos& objPos::operator= (const objPos &o){

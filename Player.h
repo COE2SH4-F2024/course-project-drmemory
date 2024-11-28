@@ -20,6 +20,7 @@ class Player
         Player(GameMechs* thisGMRef);
         Player(GameMechs* thisGMRef, int x, int y);
         ~Player();
+        Player& operator= (const Player &p);
 
         objPos getPlayerPos() const; // Upgrade this in iteration 3.       
         void updatePlayerDir();

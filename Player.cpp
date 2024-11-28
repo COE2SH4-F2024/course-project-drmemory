@@ -23,6 +23,7 @@ Player::Player(GameMechs* thisGMRef, int x, int y)
     playerPos.setObjPos(x, y, '*');
 }
 
+//destructor
 Player::~Player()
 {
     // delete any heap members here
@@ -30,6 +31,18 @@ Player::~Player()
     //delete mainGameMechsRef;
     delete[] &playerPos;
 }
+
+//copy assignment operator
+Player& Player::operator= (const Player &p){
+    if(this != &p)
+    {
+        this->mainGameMechsRef = p.mainGameMechsRef;
+        this->myDir = p.myDir;
+
+        this->playerPos.setObjPos(p.playerPos.pos->x, p.playerPos.pos->y, p.playerPos.getSymbol());
+    }
+    return *this;
+    }
 
 objPos Player::getPlayerPos() const
 {

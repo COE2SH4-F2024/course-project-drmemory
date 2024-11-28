@@ -32,6 +32,7 @@ objPosArrayList::objPosArrayList(const objPosArrayList& a){
 objPosArrayList::~objPosArrayList()
 {
     delete[] aList;
+    aList = nullptr;
 }
 
 // Copy assignment Operator
@@ -39,9 +40,6 @@ objPosArrayList::~objPosArrayList()
 objPosArrayList& objPosArrayList::operator= (const objPosArrayList &a){
     if(this != &a)
     {
-
-        delete[] this->aList;
-
         this->arrayCapacity = a.arrayCapacity;
         this->listSize = a.listSize;
         this->aList = new objPos[a.arrayCapacity];
@@ -79,9 +77,8 @@ void objPosArrayList::insertHead(objPos thisPos)
             aList[i] = aList[i - 1];
         }
         aList[0] = thisPos;
-    }
-    listSize++;
-    
+        listSize++;
+    }    
 }
 
 void objPosArrayList::insertTail(objPos thisPos)
