@@ -10,6 +10,8 @@ using namespace std;
 
 GameMechs* gameMech = nullptr;  
 
+Player* playerObject = nullptr;
+
 
 bool exitFlag;
 
@@ -45,48 +47,103 @@ int main(void)
 void Initialize(void)
 {
     MacUILib_init();
-    MacUILib_clearScreen();
+
+    input = 0;
+    
     gameMech = new GameMechs(30,15);
+
+    playerObject = new Player(gameMech, 5, 5);
 
     exitFlag = false;
 }
 
 void GetInput(void)
-{   char input = MacUILib_getChar();  
+{   
+    if(MacUILib_hasChar())
+    {
+        input = MacUILib_getChar();
+    }
+
     gameMech->setInput(input);
 
-    if (input == '!') {
-        gameMech->setExitTrue();
-    }
+    
 
    
 }
 
 void RunLogic(void){
+
+    if (input == '!') {
+        gameMech->setExitTrue();
+    }
+
     if (gameMech->getExitFlagStatus())
     {
         exitFlag = true;  
     }
 
-    gameMech->incrementScore();   
+    // gameMech->incrementScore();   
   
-    
+    playerObject->updatePlayerDir();
+    playerObject->movePlayer();
     
 }
 
 void DrawScreen(void)
-{       
+{
+
+    MacUILib_clearScreen();  
+
     int Board_Width = gameMech->getBoardSizeX(); 
     int Board_Len = gameMech->getBoardSizeY(); 
 
-        MacUILib_clearScreen();    
+    int playerX = playerObject->getPlayerPos().pos->x;
+    int playerY = playerObject->getPlayerPos().pos->y;
+    char playerSymbol = playerObject->getPlayerPos().getSymbol();
+    
+    // int x, y;
+    // char board[Board_Len][Board_Width]; // y represents rows, x represents columns
+    // for(y=0; y<=Board_Len; y++)
+    // {
+    //     for(x=0; x<=Board_Width; x++)
+    //     {
+    //         if(y!=0 && y!=Board_Len)
+    //         {
+    //             if(x==0 || x == Board_Width)
+    //             {
+    //                 board[y][x] = '#';
+    //             } 
+    //             else
+    //             {
+    //                 board[y][x] = ' ';
+    //             }
+    //         }
+    //         else
+    //         {
+    //             board[y][x] = '#';
 
+    //         }
+    //     }
+    // }
 
-    for (int y = 0; y < Board_Len; ++y) {   /
+    // board[playerY][playerX] = playerSymbol;
+
+    // for(y=0; y<=Board_Len; y++)
+    // {
+    //     for(x=0; x<=Board_Width; x++)
+    //     {
+    //         MacUILib_printf("%c", board[y][x]);
+    //     }
+    //     MacUILib_printf("\n");
+    // }
+
+    for (int y = 0; y < Board_Len; ++y) {   
         for (int x = 0; x < Board_Width; ++x) {  
             if (x == 0 || x == Board_Width - 1 || y == 0 || y == Board_Len - 1) {
                 MacUILib_printf("#"); 
-            } else {
+            } else if (x == playerX && y == playerY){
+                MacUILib_printf("%c", playerSymbol);} 
+            else {
                 MacUILib_printf(" ");
             }
         }
@@ -113,7 +170,8 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen(); 
-    delete gameMech;   
+    delete gameMech;  
+    delete playerObject; 
 
     MacUILib_uninit();
 }
