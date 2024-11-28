@@ -52,7 +52,8 @@ void Initialize(void)
     
     gameMech = new GameMechs(30,15);
 
-    playerObject = new Player(gameMech, 5, 5);
+    // playerObject = new Player(gameMech, 5, 5);
+    playerObject = new Player(gameMech);
 
     exitFlag = false;
 }
@@ -82,7 +83,7 @@ void RunLogic(void){
         exitFlag = true;  
     }
 
-    // gameMech->incrementScore();   
+    gameMech->incrementScore();   
   
     playerObject->updatePlayerDir();
     playerObject->movePlayer();

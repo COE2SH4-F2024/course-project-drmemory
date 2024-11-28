@@ -28,13 +28,13 @@ Player::~Player()
     // delete any heap members here
     // delete playerPos.pos;
     //delete mainGameMechsRef;
-    delete playerPos;
+    delete[] &playerPos;
 }
 
 objPos Player::getPlayerPos() const
 {
     // return the reference to the playerPos arrray list
-    // return playerPos;
+    return playerPos;
 }
 
 void Player::updatePlayerDir()
