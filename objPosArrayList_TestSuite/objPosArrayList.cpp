@@ -5,7 +5,7 @@
 
 objPosArrayList::objPosArrayList()
 {
-    arrayCapacity = 200;
+    arrayCapacity = ARRAY_MAX_CAP;
     listSize = 0;
     aList = new objPos[arrayCapacity];
 

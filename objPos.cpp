@@ -23,10 +23,14 @@ objPos::~objPos(){
 }
 
 objPos& objPos::operator= (const objPos &o){
-    this->pos = new Pos;
-    this->pos->x = o.pos->x;
-    this->pos->y = o.pos->y;
-    this->symbol = o.symbol;
+    if(this != &o){
+        delete this->pos;
+
+        this->pos = new Pos;
+        this->pos->x = o.pos->x;
+        this->pos->y = o.pos->y;
+        this->symbol = o.symbol;
+    } 
 
     return *this;
 }
