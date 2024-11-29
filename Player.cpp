@@ -10,7 +10,7 @@ Player::Player(GameMechs* thisGMRef)
     int xInitial = mainGameMechsRef->getBoardSizeX() / 2;
     int yInitial = mainGameMechsRef->getBoardSizeY() / 2;
 
-    // playerPos.pos = new Pos;
+    playerPos = objPos();
     playerPos.setObjPos(xInitial, yInitial, '*');
 }
 
@@ -20,6 +20,7 @@ Player::Player(GameMechs* thisGMRef, int x, int y)
     myDir = STOP;
 
     // more actions to be included
+    playerPos = objPos();
     playerPos.setObjPos(x, y, '*');
 }
 
@@ -27,17 +28,20 @@ Player::Player(GameMechs* thisGMRef, int x, int y)
 Player::~Player()
 {
     // delete any heap members here
-    delete[] &playerPos;
 }
 
 //copy assignment operator
+
 Player& Player::operator= (const Player &p){
     if(this != &p)
     {
         this->mainGameMechsRef = p.mainGameMechsRef;
         this->myDir = p.myDir;
-
-        this->playerPos.setObjPos(p.playerPos.pos->x, p.playerPos.pos->y, p.playerPos.getSymbol());
+        this->playerPos.pos->x = p.playerPos.pos->x;
+        this->playerPos.pos->y = p.playerPos.pos->y;
+        this->playerPos.symbol = p.playerPos.symbol;    
+        
+        // this->playerPos.setObjPos(p.playerPos.pos->x, p.playerPos.pos->y, p.playerPos.symbol);
     }
     return *this;
     }
