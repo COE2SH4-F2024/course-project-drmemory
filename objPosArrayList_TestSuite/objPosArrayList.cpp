@@ -9,9 +9,15 @@ objPosArrayList::objPosArrayList()
     listSize = 0;
     aList = new objPos[arrayCapacity];
 
-    // for(int i = 0; i < arrayCapacity; i++){
-    //     aList[i] = nullptr;
-    // }    
+}   
+
+// additional constructor
+
+objPosArrayList::objPosArrayList(int aCapacity)
+{
+    arrayCapacity = aCapacity;
+    listSize = 0;
+    aList = new objPos[arrayCapacity];
 }   
 
 // Copy constructor
@@ -37,15 +43,21 @@ objPosArrayList::~objPosArrayList()
 
 // Copy assignment Operator
 
-objPosArrayList& objPosArrayList::operator= (const objPosArrayList &a){
+objPosArrayList& objPosArrayList::operator= (const objPosArrayList& a){
     if(this != &a)
     {
+        delete[] this->aList;
+
         this->arrayCapacity = a.arrayCapacity;
         this->listSize = a.listSize;
-        this->aList = new objPos[a.arrayCapacity];
 
-        for(int i = 0; i < listSize; i++){
-            aList[i] = a.aList[i];
+        if (a.arrayCapacity > 0) {
+            this->aList = new objPos[a.arrayCapacity];
+            for (int i = 0; i < a.listSize; i++) {
+                this->aList[i] = a.aList[i];
+            }
+        } else {
+            this->aList = nullptr; 
         }
     }
 
@@ -55,8 +67,7 @@ objPosArrayList& objPosArrayList::operator= (const objPosArrayList &a){
 // Copy Function
 
 objPosArrayList objPosArrayList::copy(){
-    objPosArrayList copy = objPosArrayList();
-    copy.arrayCapacity = arrayCapacity;
+    objPosArrayList copy = objPosArrayList(arrayCapacity);
     copy.listSize = listSize;
 
     for(int i = 0; i < listSize; i++){
