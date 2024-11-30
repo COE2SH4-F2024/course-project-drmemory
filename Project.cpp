@@ -55,14 +55,11 @@ void Initialize(void)
 
     gameMech = new GameMechs(30,15);
 
-    playerObject = new Player(gameMech, 5, 5);
-    playerObject = new Player(gameMech);
+    playerObject = new Player(gameMech, 5);
     food = new Food();
-    food->generateFood(playerObject->getPlayerPos()); // praying it works now hardcoded location of board in generate food(WILL TRY TO FIX)
-
+    //food->generateFood(playerObject->getPlayerPos()); // praying it works now hardcoded location of board in generate food(WILL TRY TO FIX)
+    food->generateFood(playerObject->getPlayerPos()->getHeadElement());
     
-
-
     exitFlag = false;
 }
 
@@ -102,12 +99,13 @@ void DrawScreen(void) {
     MacUILib_clearScreen();
 
     int Board_Width = gameMech->getBoardSizeX(); 
-    int Board_Len = gameMech->getBoardSizeY(); 
+    int Board_Len = gameMech->getBoardSizeY();
+    bool occupied;
 
-    int playerX = playerObject->getPlayerPos().pos->x;
-    int playerY = playerObject->getPlayerPos().pos->y;
-    char playerSymbol = playerObject->getPlayerPos().getSymbol();
-    MacUILib_clearScreen();
+    // int playerX = playerObject->getPlayerPos()->getHeadElement().pos->x;
+    // int playerY = playerObject->getPlayerPos()->getHeadElement().pos->y;
+    // char playerSymbol = playerObject->getPlayerPos().getSymbol();
+    char playerSymbol = playerObject->getPlayerPos()->getHeadElement().symbol;
 
     objPos foodPos = food->getFoodPos();
     int foodX = foodPos.pos->x;
@@ -117,19 +115,30 @@ void DrawScreen(void) {
     MacUILib_printf("Food Position: (%d, %d)\n", foodX, foodY);  
 
     for (int y = 0; y < Board_Len; ++y) {   
-        for (int x = 0; x < Board_Width; ++x) {  
+        for (int x = 0; x < Board_Width; ++x) { 
+            occupied = false; 
             if (x == 0 || x == Board_Width - 1 || y == 0 || y == Board_Len - 1) {
-                MacUILib_printf("#");  
-            } 
-            else if (x == playerX && y == playerY) {
-                MacUILib_printf("%c", playerSymbol);  
-            } 
-            else if (x == foodX && y == foodY) {
-                MacUILib_printf("%c", foodSymbol);  
-            } 
-            else {
-                MacUILib_printf(" ");  
+                MacUILib_printf("#");
+                continue;  
             }
+
+            for(int i = 0; i < playerObject->getPlayerPos()->getSize(); i++){
+                
+                if(x == playerObject->getPlayerPos()->getElement(i).pos->x && y == playerObject->getPlayerPos()->getElement(i).pos->y){
+                    MacUILib_printf("%c", playerSymbol);
+                    occupied = true;
+                    break; // code for if the area is not occupied does not run
+                }
+            }
+
+            if(!occupied){
+                if (x == foodX && y == foodY) {
+                MacUILib_printf("%c", foodSymbol);  
+                } else {
+                MacUILib_printf(" ");  
+                }
+            }
+
         }
         MacUILib_printf("\n");
     }

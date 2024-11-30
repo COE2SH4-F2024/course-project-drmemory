@@ -18,18 +18,20 @@ class Player
         enum Dir {UP, DOWN, LEFT, RIGHT, STOP};  // This is the direction state
 
         Player(GameMechs* thisGMRef);
-        Player(GameMechs* thisGMRef, int x, int y);
+        Player(GameMechs* thisGMRef, int size);
         ~Player();
         Player& operator= (const Player &p);
 
-        objPos getPlayerPos() const; // Upgrade this in iteration 3.       
+        // objPos getPlayerPos() const; // Upgrade this in iteration 3.   
+        objPosArrayList* getPlayerPos() const; 
         void updatePlayerDir();
         void movePlayer();
 
         // More methods to be added here
 
     private:
-        objPos playerPos; // Upgrade this in iteration 3.       
+        // objPos playerPos; // Upgrade this in iteration 3.     
+        objPosArrayList* playerPosList;  
         enum Dir myDir;
 
         // Need a reference to the Main Game Mechanisms
