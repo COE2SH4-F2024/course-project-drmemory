@@ -1,5 +1,6 @@
 #include "GameMechs.h"
 
+
 GameMechs::GameMechs()
 {boardSizeX = 30;
 boardSizeY = 15;
@@ -10,8 +11,10 @@ input = 0;
 
 
 
+
 }
 
+ 
 
 GameMechs::GameMechs(int boardX, int boardY)
 { boardSizeX = boardX;
@@ -25,12 +28,6 @@ input = 0;
     
 }
 
-// do you need a destructor?
-GameMechs::~GameMechs()
-{//not right now nothing to delete
-
-    
-}
 
 bool GameMechs::getExitFlagStatus() const
 {    return exitFlag;
@@ -92,4 +89,6 @@ void GameMechs::clearInput()
 
 }
 
-// More methods should be added here
+GameMechs::~GameMechs()
+{
+}

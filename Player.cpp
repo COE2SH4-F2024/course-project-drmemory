@@ -40,12 +40,10 @@ Player& Player::operator= (const Player &p){
         this->playerPos.pos->x = p.playerPos.pos->x;
         this->playerPos.pos->y = p.playerPos.pos->y;
         this->playerPos.symbol = p.playerPos.symbol;    
-        
-        // this->playerPos.setObjPos(p.playerPos.pos->x, p.playerPos.pos->y, p.playerPos.symbol);
+                // this->playerPos.setObjPos(p.playerPos.pos->x, p.playerPos.pos->y, p.playerPos.symbol);
     }
     return *this;
     }
-
 objPos Player::getPlayerPos() const
 {
     // return the reference to the playerPos arrray list
@@ -123,7 +121,7 @@ void Player::movePlayer()
         default:
             break;
     }  
-    
+
 }
 
 // More methods to be added
