@@ -65,7 +65,7 @@ void Initialize(void)
 
 void GetInput(void)
 {   
-    if(MacUILib_hasChar())
+    if(MacUILib_hasChar()) // collect input if input is detected
     {
         input = MacUILib_getChar();
     }
@@ -102,37 +102,47 @@ void DrawScreen(void) {
     int Board_Len = gameMech->getBoardSizeY();
     bool occupied;
 
+    // *** Code from prev iteration:
+
     // int playerX = playerObject->getPlayerPos()->getHeadElement().pos->x;
     // int playerY = playerObject->getPlayerPos()->getHeadElement().pos->y;
     // char playerSymbol = playerObject->getPlayerPos().getSymbol();
-    char playerSymbol = playerObject->getPlayerPos()->getHeadElement().symbol;
+
+    // *** code from prev it ends here
 
     objPos foodPos = food->getFoodPos();
     int foodX = foodPos.pos->x;
     int foodY = foodPos.pos->y;
     char foodSymbol = foodPos.symbol;
 
-    MacUILib_printf("Food Position: (%d, %d)\n", foodX, foodY);  
+    MacUILib_printf("Food Position: (%d, %d)\nHi Pookie :)\n", foodX, foodY);  
 
     for (int y = 0; y < Board_Len; ++y) {   
         for (int x = 0; x < Board_Width; ++x) { 
             occupied = false; 
             if (x == 0 || x == Board_Width - 1 || y == 0 || y == Board_Len - 1) {
                 MacUILib_printf("#");
-                continue;  
+                continue;  // skips rest of code in x-loop iteration - boarder would conflict 
             }
 
-            for(int i = 0; i < playerObject->getPlayerPos()->getSize(); i++){
+            for(int i = 0; i < playerObject->getPlayerPos()->getSize(); i++){ // iterate through body of snake to account for every element
                 
                 if(x == playerObject->getPlayerPos()->getElement(i).pos->x && y == playerObject->getPlayerPos()->getElement(i).pos->y){
-                    MacUILib_printf("%c", playerSymbol);
-                    occupied = true;
-                    break; // code for if the area is not occupied does not run
+                    MacUILib_printf("%c", playerObject->getPlayerPos()->getElement(i).symbol);
+                    occupied = true; // set occupied flag to true to prevent blank spaced " " from overwriting player
+                    break; // break out of current i-loop - does not need to check rest of coordinates (ONLY ONE VALID SET PER ELEMENT!)
                 }
             }
 
-            if(!occupied){
-                if (x == foodX && y == foodY) {
+            if(!occupied){ // only print blank space " " if area is not occupied by another item - prevents overwriting
+                
+                // hi pookie, for multiple food, if u have to use an array, i think using a 
+                // loop like the player one could work?
+                // if that is the case, we can get rid of the ifs in here and just leave it as 
+                // if(!occupied){
+                // MacUILib_printf(" ");}
+
+                if (x == foodX && y == foodY) { 
                 MacUILib_printf("%c", foodSymbol);  
                 } else {
                 MacUILib_printf(" ");  
@@ -160,6 +170,8 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen(); 
+
+    // free up dynamically allocated memory
     delete gameMech;  
     delete playerObject; 
     delete food;
