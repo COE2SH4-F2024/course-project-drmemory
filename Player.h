@@ -17,10 +17,11 @@ class Player
     public:
         enum Dir {UP, DOWN, LEFT, RIGHT, STOP};  // This is the direction state
 
-        Player(GameMechs* thisGMRef);
-        Player(GameMechs* thisGMRef, int size);
-        ~Player();
-        Player& operator= (const Player &p);
+        Player(GameMechs* thisGMRef); // default constructor
+        Player(GameMechs* thisGMRef, int size); // additional constructor
+        Player(const Player &p); // copy constructor
+        ~Player(); // destructor
+        Player& operator= (const Player &p); // copy assignment operator
 
         // objPos getPlayerPos() const; // Upgrade this in iteration 3.   
         objPosArrayList* getPlayerPos() const; 

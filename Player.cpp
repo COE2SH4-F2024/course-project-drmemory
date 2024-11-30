@@ -31,6 +31,14 @@ Player::Player(GameMechs* thisGMRef, int size) // additional constructor, create
     }
 }
 
+Player::Player(const Player &p) // copy constructor
+{
+    mainGameMechsRef = p.mainGameMechsRef;
+    myDir = p.myDir;
+    playerPosList = new objPosArrayList();
+    playerPosList = p.playerPosList;
+}
+
 //destructor
 Player::~Player()
 {
@@ -43,13 +51,10 @@ Player& Player::operator= (const Player &p){
     {
         this->mainGameMechsRef = p.mainGameMechsRef;
         this->myDir = p.myDir;
-        // this->playerPos.pos->x = p.playerPos.pos->x;
-        // this->playerPos.pos->y = p.playerPos.pos->y;
-        // this->playerPos.symbol = p.playerPos.symbol;    
-                // this->playerPos.setObjPos(p.playerPos.pos->x, p.playerPos.pos->y, p.playerPos.symbol);
+        this->playerPosList = p.playerPosList;
     }
     return *this;
-    }
+}
 
 
 objPosArrayList* Player::getPlayerPos() const
