@@ -4,6 +4,7 @@
 #include "GameMechs.h"
 #include "objPos.h"
 #include "objPosArrayList.h"
+#include "Food.h"
 
 class Player
 {
@@ -17,8 +18,8 @@ class Player
     public:
         enum Dir {UP, DOWN, LEFT, RIGHT, STOP};  // This is the direction state
 
-        Player(GameMechs* thisGMRef); // default constructor
-        Player(GameMechs* thisGMRef, int size); // additional constructor
+        Player(GameMechs* thisGMRef, Food* Foodref); // default constructor
+        Player(GameMechs* thisGMRef, Food* Foodref, int size); // additional constructor
         Player(const Player &p); // copy constructor
         ~Player(); // destructor
         Player& operator= (const Player &p); // copy assignment operator
@@ -29,7 +30,9 @@ class Player
         void movePlayer();
 
         // More methods to be added here
-
+        bool checkFoodConsumption();
+        void increasePlayerLength();
+        
     private:
         // objPos playerPos; // Upgrade this in iteration 3.     
         objPosArrayList* playerPosList;  
@@ -37,6 +40,7 @@ class Player
 
         // Need a reference to the Main Game Mechanisms
         GameMechs* mainGameMechsRef;
+        Food* foodReference;
 };
 
 #endif

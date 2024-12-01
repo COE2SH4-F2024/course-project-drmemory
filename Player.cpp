@@ -1,8 +1,9 @@
 #include "Player.h"
 
-Player::Player(GameMechs* thisGMRef) // default constructor, creates a snake that is 1 char long
+Player::Player(GameMechs* thisGMRef, Food* foodRef) // default constructor, creates a snake that is 1 char long
 {
     mainGameMechsRef = thisGMRef;
+    foodReference = foodRef;
     myDir = STOP;
 
     // sets the initial position of the snake to the middle of the board
@@ -17,9 +18,10 @@ Player::Player(GameMechs* thisGMRef) // default constructor, creates a snake tha
     // playerPos.setObjPos(xInitial, yInitial, '*');
 }
 
-Player::Player(GameMechs* thisGMRef, int size) // additional constructor, creates a snake of a custom length
+Player::Player(GameMechs* thisGMRef, Food* foodRef, int size) // additional constructor, creates a snake of a custom length
 {
     mainGameMechsRef = thisGMRef;
+    foodReference = foodRef;
     myDir = STOP;
 
     int xInitial = mainGameMechsRef->getBoardSizeX() / 2 - size / 2; // shift head left to leave space for rest of body
@@ -151,6 +153,11 @@ void Player::movePlayer()
         playerPosList->removeTail();
     }
 
+    if (checkFoodConsumption()) {
+        increasePlayerLength();
+        foodReference->generateFood(playerPosList->getHeadElement());  
+    }
+
     // switch(myDir)
     // {
     //     case UP:
@@ -225,3 +232,22 @@ void Player::movePlayer()
 }
 
 // More methods to be added
+
+bool Player::checkFoodConsumption(){
+// {    objPos* foodlist = foodReference->getFoodPos();  // Get the list of food positions
+
+//     for (int i = 0; i < foodlist->getSize(); ++i) {
+//         objPos foodPos = foodlist->getElement(i);  // Get each food position
+
+            if (playerPosList->getHeadElement().pos->x == foodReference->getFoodPos().pos->x &&
+        playerPosList->getHeadElement().pos->y == foodReference->getFoodPos().pos->y) {
+            // foodReference->generateFood(playerPosList);  // Generate new food
+            // mainGameMechsRef->incrementScore();  // Increment the score
+            return true;
+        }
+        return false;
+    }
+
+void Player::increasePlayerLength() {
+    mainGameMechsRef->incrementScore();
+    playerPosList->insertTail(playerPosList->getTailElement());}

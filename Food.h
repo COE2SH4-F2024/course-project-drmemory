@@ -10,7 +10,8 @@ private:
 public:
     Food();  
     ~Food();  
-    Food(const Food& other); 
+    // Food(const Food& other); 
+    Food(const Food &f);
     Food& operator=(const Food& other); 
     void generateFood(objPos blockOff);
     objPos getFoodPos() const;

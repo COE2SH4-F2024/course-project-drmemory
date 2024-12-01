@@ -6,9 +6,16 @@
 
 
 Food::Food() {
-    foodPos.pos->x =5;  // DID not know we had to do random position could be explainin the out of bounds goin to assing to arbitrary values(can i even spell arbitrary)
+    foodPos = objPos();
+    foodPos.pos->x = 5;  // DID not know we had to do random position could be explainin the out of bounds goin to assing to arbitrary values(can i even spell arbitrary)
     foodPos.pos->y = 5;
     foodPos.symbol = 'J';  
+}
+
+Food::Food(const Food &f) {
+    foodPos.pos->x = f.foodPos.pos->x;
+    foodPos.pos->y = f.foodPos.pos->y;
+    foodPos.symbol = f.foodPos.symbol;
 }
 
 Food::~Food() {

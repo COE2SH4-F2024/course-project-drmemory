@@ -13,7 +13,7 @@ using namespace std;
 GameMechs* gameMech = nullptr;  
 
 Player* playerObject = nullptr;
-Food* food; // did
+Food* food = nullptr; // did
 
 
 bool exitFlag;
@@ -54,9 +54,10 @@ void Initialize(void)
     input = 0;
 
     gameMech = new GameMechs(30,15);
-
-    playerObject = new Player(gameMech, 10);
     food = new Food();
+
+    playerObject = new Player(gameMech, food, 10);
+    
     //food->generateFood(playerObject->getPlayerPos()); // praying it works now hardcoded location of board in generate food(WILL TRY TO FIX)
     food->generateFood(playerObject->getPlayerPos()->getHeadElement());
     
