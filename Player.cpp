@@ -104,7 +104,7 @@ void Player::updatePlayerDir()
 }
 
 void Player::movePlayer()
-{
+{objPos playerPos = playerPosList->getHeadElement();
     // create variables for position limits -> used to implement wrap-around
     // limit is size of board - 2 to prevent interference with boarder (index size - 1)
     int xLimit = mainGameMechsRef->getBoardSizeX() - 2;
@@ -150,14 +150,25 @@ void Player::movePlayer()
 
     if(myDir != STOP && !quit){
         playerPosList->insertHead(objPos(headPosX, headPosY, playerPosList->getHeadElement().symbol));
-        playerPosList->removeTail();
-    }
 
-    if (checkFoodConsumption()) {
-        increasePlayerLength();
-        foodReference->generateFood(playerPosList->getHeadElement());  
+ if (!checkFoodConsumption()) {
+            playerPosList->removeTail(); 
+        } 
+        else{
+            mainGameMechsRef->incrementScore(); 
+            foodReference->generateFood(playerPos);
+             playerPosList->insertTail(playerPosList->getTailElement());
+            playerPosList->removeTail();
+            
     }
+       
+       
+           }
 
+    // if (checkFoodConsumption()) {
+    //     increasePlayerLength();
+    //     mainGameMechsRef->incrementScore();
+    // } 
     // switch(myDir)
     // {
     //     case UP:
@@ -232,13 +243,10 @@ void Player::movePlayer()
 }
 
 // More methods to be added
-
 bool Player::checkFoodConsumption(){
 // {    objPos* foodlist = foodReference->getFoodPos();  // Get the list of food positions
-
 //     for (int i = 0; i < foodlist->getSize(); ++i) {
 //         objPos foodPos = foodlist->getElement(i);  // Get each food position
-
             if (playerPosList->getHeadElement().pos->x == foodReference->getFoodPos().pos->x &&
         playerPosList->getHeadElement().pos->y == foodReference->getFoodPos().pos->y) {
             // foodReference->generateFood(playerPosList);  // Generate new food
@@ -246,8 +254,14 @@ bool Player::checkFoodConsumption(){
             return true;
         }
         return false;
-    }
+}
+//     }
+// void Player::increasePlayerLength() {
+//     objPos playerPos = playerPosList->getHeadElement();
+//     playerPosList->insertHead(playerPos);
+//     foodReference->generateFood(playerPos);
+    
 
-void Player::increasePlayerLength() {
-    mainGameMechsRef->incrementScore();
-    playerPosList->insertTail(playerPosList->getTailElement());}
+
+//     }
+

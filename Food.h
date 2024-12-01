@@ -1,4 +1,5 @@
 #ifndef FOOD_H
+
 #define FOOD_H
 #include "objPos.h"  
 
@@ -16,5 +17,4 @@ public:
     void generateFood(objPos blockOff);
     objPos getFoodPos() const;
 };
-
 #endif

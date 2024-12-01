@@ -17,7 +17,6 @@ Food::Food(const Food &f) {
     foodPos.pos->y = f.foodPos.pos->y;
     foodPos.symbol = f.foodPos.symbol;
 }
-
 Food::~Food() {
     // nothing tbh dk if i can delete this b4 we submit might need for advanced?
 }
