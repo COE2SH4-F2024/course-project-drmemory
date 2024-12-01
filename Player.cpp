@@ -107,49 +107,92 @@ void Player::movePlayer()
     // limit is size of board - 2 to prevent interference with boarder (index size - 1)
     int xLimit = mainGameMechsRef->getBoardSizeX() - 2;
     int yLimit = mainGameMechsRef->getBoardSizeY() - 2;
+    int headPosX = playerPosList->getHeadElement().pos->x;
+    int headPosY = playerPosList->getHeadElement().pos->y;
+    bool quit = false; // prevents delay - time for setting exitflag and main program retreiving exitflag causes delay in terminating game. This flag prevents that
 
     switch(myDir)
     {
         case UP:
-            if(playerPosList->getHeadElement().pos->y == 1){
-                playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x, yLimit, playerPosList->getHeadElement().symbol));
-                playerPosList->removeTail();
-            } else{
-                playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x, playerPosList->getHeadElement().pos->y - 1, playerPosList->getHeadElement().symbol));
-                playerPosList->removeTail();
-            }
+            headPosY--;
+            if(headPosY < 1){
+                headPosY = yLimit;}
             break;
         case LEFT:
-            if(playerPosList->getHeadElement().pos->x == 1){
-                    playerPosList->insertHead(objPos(xLimit, playerPosList->getHeadElement().pos->y, playerPosList->getHeadElement().symbol));
-                    playerPosList->removeTail();
-            } else{
-                playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x - 1, playerPosList->getHeadElement().pos->y, playerPosList->getHeadElement().symbol));
-                playerPosList->removeTail();
-            }
+            headPosX--;
+            if(headPosX < 1){
+                headPosX = xLimit;}
             break;
         case DOWN:
-            if(playerPosList->getHeadElement().pos->y == yLimit){
-                playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x, 1, playerPosList->getHeadElement().symbol));
-                playerPosList->removeTail();
-            } else{
-                playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x, playerPosList->getHeadElement().pos->y + 1, playerPosList->getHeadElement().symbol));
-                playerPosList->removeTail();
-            }
+            headPosY++;
+            if (headPosY > yLimit){
+                headPosY = 1;}
             break;
         case RIGHT:
-            if(playerPosList->getHeadElement().pos->x == xLimit){
-                playerPosList->insertHead(objPos(1, playerPosList->getHeadElement().pos->y, playerPosList->getHeadElement().symbol));
-                playerPosList->removeTail();
-            } else{
-                playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x + 1, playerPosList->getHeadElement().pos->y, playerPosList->getHeadElement().symbol));
-                playerPosList->removeTail();
-            }
+            headPosX++;
+            if(headPosX > xLimit){
+                headPosX = 1;}
             break;
         case STOP:
         default:
             break;
-    }  
+    }
+
+    for(int i = 1; i < playerPosList->getSize(); i++){
+        if(playerPosList->getHeadElement().pos->x == playerPosList->getElement(i).pos->x && playerPosList->getHeadElement().pos->y == playerPosList->getElement(i).pos->y){
+            quit = true;
+            mainGameMechsRef->setExitTrue();
+            mainGameMechsRef->setLoseFlag();
+        }
+    }
+
+    if(myDir != STOP && !quit){
+        playerPosList->insertHead(objPos(headPosX, headPosY, playerPosList->getHeadElement().symbol));
+        playerPosList->removeTail();
+    }
+
+    // switch(myDir)
+    // {
+    //     case UP:
+    //         if(playerPosList->getHeadElement().pos->y == 1){
+    //             playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x, yLimit, playerPosList->getHeadElement().symbol));
+    //             playerPosList->removeTail();
+    //         } else{
+    //             playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x, playerPosList->getHeadElement().pos->y - 1, playerPosList->getHeadElement().symbol));
+    //             playerPosList->removeTail();
+    //         }
+    //         break;
+    //     case LEFT:
+    //         if(playerPosList->getHeadElement().pos->x == 1){
+    //                 playerPosList->insertHead(objPos(xLimit, playerPosList->getHeadElement().pos->y, playerPosList->getHeadElement().symbol));
+    //                 playerPosList->removeTail();
+    //         } else{
+    //             playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x - 1, playerPosList->getHeadElement().pos->y, playerPosList->getHeadElement().symbol));
+    //             playerPosList->removeTail();
+    //         }
+    //         break;
+    //     case DOWN:
+    //         if(playerPosList->getHeadElement().pos->y == yLimit){
+    //             playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x, 1, playerPosList->getHeadElement().symbol));
+    //             playerPosList->removeTail();
+    //         } else{
+    //             playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x, playerPosList->getHeadElement().pos->y + 1, playerPosList->getHeadElement().symbol));
+    //             playerPosList->removeTail();
+    //         }
+    //         break;
+    //     case RIGHT:
+    //         if(playerPosList->getHeadElement().pos->x == xLimit){
+    //             playerPosList->insertHead(objPos(1, playerPosList->getHeadElement().pos->y, playerPosList->getHeadElement().symbol));
+    //             playerPosList->removeTail();
+    //         } else{
+    //             playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x + 1, playerPosList->getHeadElement().pos->y, playerPosList->getHeadElement().symbol));
+    //             playerPosList->removeTail();
+    //         }
+    //         break;
+    //     case STOP:
+    //     default:
+    //         break;
+    // }  
 
     // Code from prev iteration:
     // switch(myDir)

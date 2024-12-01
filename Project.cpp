@@ -55,7 +55,7 @@ void Initialize(void)
 
     gameMech = new GameMechs(30,15);
 
-    playerObject = new Player(gameMech, 5);
+    playerObject = new Player(gameMech, 10);
     food = new Food();
     //food->generateFood(playerObject->getPlayerPos()); // praying it works now hardcoded location of board in generate food(WILL TRY TO FIX)
     food->generateFood(playerObject->getPlayerPos()->getHeadElement());
@@ -159,6 +159,10 @@ void DrawScreen(void) {
         MacUILib_printf("Exiting the game\n");
     }
 
+    if (gameMech->getLoseFlagStatus()) {
+        MacUILib_printf("You Lose! :(\n");
+    }
+
 }
 
 void LoopDelay(void)
@@ -169,7 +173,7 @@ void LoopDelay(void)
 
 void CleanUp(void)
 {
-    MacUILib_clearScreen(); 
+    // MacUILib_clearScreen(); 
 
     // free up dynamically allocated memory
     delete gameMech;  
