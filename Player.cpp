@@ -149,14 +149,18 @@ void Player::movePlayer()
     }
 
     if(myDir != STOP && !quit){
-        playerPosList->insertHead(objPos(headPosX, headPosY, playerPosList->getHeadElement().symbol));
-        playerPosList->removeTail();
+        if(!checkFoodConsumption()){
+            playerPosList->insertHead(objPos(headPosX, headPosY, playerPosList->getHeadElement().symbol));
+            playerPosList->removeTail();}
+        // } else {
+        //     foodReference->generateFood(playerPosList);
+        // }
     }
 
-    if (checkFoodConsumption()) {
-        increasePlayerLength();
-        foodReference->generateFood(playerPosList->getHeadElement());  
-    }
+    // if (checkFoodConsumption()) {
+    //     increasePlayerLength();
+    //     foodReference->generateFood(playerPosList->getHeadElement());  
+    // }
 
     // switch(myDir)
     // {
@@ -233,21 +237,53 @@ void Player::movePlayer()
 
 // More methods to be added
 
+// bool Player::checkFoodConsumption(){
+// // {    objPos* foodlist = foodReference->getFoodPos();  // Get the list of food positions
+
+// //     for (int i = 0; i < foodlist->getSize(); ++i) {
+// //         objPos foodPos = foodlist->getElement(i);  // Get each food position
+
+//             if (playerPosList->getHeadElement().pos->x == foodReference->getFoodPos()->getHeadElement().pos->x &&
+//         playerPosList->getHeadElement().pos->y == foodReference->getFoodPos()->getHeadElement().pos->y) {
+//             // foodReference->generateFood(playerPosList);  // Generate new food
+//             // mainGameMechsRef->incrementScore();  // Increment the score
+//             return true;
+//         }
+//         return false;
+//     }
+
+// void Player::increasePlayerLength() {
+//     mainGameMechsRef->incrementScore();
+//     playerPosList->insertTail(playerPosList->getTailElement());}
+
 bool Player::checkFoodConsumption(){
-// {    objPos* foodlist = foodReference->getFoodPos();  // Get the list of food positions
+    objPos playerPos = playerPosList->getHeadElement();
+    objPosArrayList* foodList = foodReference->getFoodPos();
+    for (int i = 0; i < foodList->getSize(); ++i) {
+        objPos foodItem = foodList->getElement(i);
 
-//     for (int i = 0; i < foodlist->getSize(); ++i) {
-//         objPos foodPos = foodlist->getElement(i);  // Get each food position
+        if (playerPos.pos->x == foodItem.pos->x && playerPos.pos->y == foodItem.pos->y) {
+            if (foodItem.symbol == 'H') {
+                mainGameMechsRef->incrementScore(10);  
+            } else if (foodItem.symbol == 'A') {
+                mainGameMechsRef->incrementScore(50); 
+                increasePlayerLength(10); 
+            } else {
+                mainGameMechsRef->incrementScore(1); 
+                increasePlayerLength(1); 
+            }
 
-            if (playerPosList->getHeadElement().pos->x == foodReference->getFoodPos().pos->x &&
-        playerPosList->getHeadElement().pos->y == foodReference->getFoodPos().pos->y) {
-            // foodReference->generateFood(playerPosList);  // Generate new food
-            // mainGameMechsRef->incrementScore();  // Increment the score
-            return true;
+            playerPosList->removeHead();  
+            foodReference->generateFood(playerPosList);  
+            return true; 
         }
-        return false;
     }
+    return false;  
+}
 
-void Player::increasePlayerLength() {
-    mainGameMechsRef->incrementScore();
-    playerPosList->insertTail(playerPosList->getTailElement());}
+void Player::increasePlayerLength(int points) {
+    playerPosList->insertTail(playerPosList->getTailElement());
+    playerPosList->removeTail();
+
+    
+    }

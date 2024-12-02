@@ -56,10 +56,10 @@ void Initialize(void)
     gameMech = new GameMechs(30,15);
     food = new Food();
 
-    playerObject = new Player(gameMech, food, 10);
+    playerObject = new Player(gameMech, food);
     
-    //food->generateFood(playerObject->getPlayerPos()); // praying it works now hardcoded location of board in generate food(WILL TRY TO FIX)
-    food->generateFood(playerObject->getPlayerPos()->getHeadElement());
+    food->generateFood(playerObject->getPlayerPos()); // praying it works now hardcoded location of board in generate food(WILL TRY TO FIX)
+    // food->generateFood(playerObject->getPlayerPos()->getHeadElement());
     
     exitFlag = false;
 }
@@ -89,7 +89,7 @@ void RunLogic(void){
         exitFlag = true;  
     }
 
-    gameMech->incrementScore();   
+    // gameMech->incrementScore();   
 
     playerObject->updatePlayerDir();
     playerObject->movePlayer();
@@ -111,12 +111,13 @@ void DrawScreen(void) {
 
     // *** code from prev it ends here
 
-    objPos foodPos = food->getFoodPos();
-    int foodX = foodPos.pos->x;
-    int foodY = foodPos.pos->y;
-    char foodSymbol = foodPos.symbol;
+    // objPosArrayList* foodPos = food->getFoodPos();
+    
+    // int foodX = foodPos.pos->x;
+    // int foodY = foodPos.pos->y;
+    // char foodSymbol = foodPos.symbol;
 
-    MacUILib_printf("Food Position: (%d, %d)\nHi Pookie :)\n", foodX, foodY);  
+    // MacUILib_printf("Food Position: (%d, %d)\nHi Pookie :)\n", foodX, foodY);  
 
     for (int y = 0; y < Board_Len; ++y) {   
         for (int x = 0; x < Board_Width; ++x) { 
@@ -135,21 +136,29 @@ void DrawScreen(void) {
                 }
             }
 
+            if(!occupied){
+                for(int i = 0; i < food->getFoodPos()->getSize(); i++){
+                    if(x == food->getFoodPos()->getElement(i).pos->x && y == food->getFoodPos()->getElement(i).pos->y){
+                        MacUILib_printf("%c", food->getFoodPos()->getElement(i).symbol);
+                        occupied = true;
+                        break;
+                    }
+                }
+            }
+
             if(!occupied){ // only print blank space " " if area is not occupied by another item - prevents overwriting
                 
                 // hi pookie, for multiple food, if u have to use an array, i think using a 
                 // loop like the player one could work?
                 // if that is the case, we can get rid of the ifs in here and just leave it as 
                 // if(!occupied){
-                // MacUILib_printf(" ");}
+                MacUILib_printf(" ");}
 
-                if (x == foodX && y == foodY) { 
-                MacUILib_printf("%c", foodSymbol);  
-                } else {
-                MacUILib_printf(" ");  
-                }
-            }
-
+                // if (x == foodX && y == foodY) { 
+                // MacUILib_printf("%c", foodSymbol);  
+                // } else {
+                // MacUILib_printf(" ");  
+                // }
         }
         MacUILib_printf("\n");
     }

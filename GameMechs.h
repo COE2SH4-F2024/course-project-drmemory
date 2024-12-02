@@ -38,7 +38,7 @@ class GameMechs
         int getBoardSizeY() const;
         
         int getScore() const;
-        void incrementScore();
+        void incrementScore(int size);
         
         // More methods should be added here
    

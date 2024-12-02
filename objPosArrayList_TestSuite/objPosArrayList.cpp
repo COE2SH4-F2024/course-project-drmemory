@@ -132,3 +132,8 @@ objPos objPosArrayList::getElement(int index) const
 {
     return aList[index];
 }
+
+void objPosArrayList::setElement(int index, objPos element)
+{
+    aList[index].symbol = element.symbol;
+}

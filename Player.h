@@ -31,7 +31,8 @@ class Player
 
         // More methods to be added here
         bool checkFoodConsumption();
-        void increasePlayerLength();
+        // void increasePlayerLength();
+        void increasePlayerLength(int points);
         
     private:
         // objPos playerPos; // Upgrade this in iteration 3.     
