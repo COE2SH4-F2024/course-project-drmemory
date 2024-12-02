@@ -1,4 +1,5 @@
 #ifndef FOOD_H
+
 #define FOOD_H
 #include "objPos.h" 
 #include "objPosArrayList.h" 
@@ -21,5 +22,4 @@ public:
     // objPos getFoodPos() const;
     objPosArrayList* getFoodPos() const;
 };
-
 #endif

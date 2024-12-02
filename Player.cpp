@@ -100,7 +100,7 @@ void Player::updatePlayerDir()
 }
 
 void Player::movePlayer()
-{
+{objPos playerPos = playerPosList->getHeadElement();
     // create variables for position limits -> used to implement wrap-around
     // limit is size of board - 2 to prevent interference with boarder (index size - 1)
     int xLimit = mainGameMechsRef->getBoardSizeX() - 2;

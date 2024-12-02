@@ -136,7 +136,7 @@ void DrawScreen(void) {
             }
 
             for(int i = 0; i < playerObject->getPlayerPos()->getSize(); i++){ // iterate through body of snake to account for every element
-                
+
                 if(x == playerObject->getPlayerPos()->getElement(i).pos->x && y == playerObject->getPlayerPos()->getElement(i).pos->y){
                     MacUILib_printf("%c", playerObject->getPlayerPos()->getElement(i).symbol);
                     occupied = true; // set occupied flag to true to prevent blank spaced " " from overwriting player
@@ -155,7 +155,7 @@ void DrawScreen(void) {
             }
 
             if(!occupied){ // only print blank space " " if area is not occupied by another item - prevents overwriting
-                
+
                 // hi pookie, for multiple food, if u have to use an array, i think using a 
                 // loop like the player one could work?
                 // if that is the case, we can get rid of the ifs in here and just leave it as 
@@ -200,5 +200,4 @@ void CleanUp(void)
     delete playerObject; 
     delete food;
 
-    MacUILib_uninit();
-}
+    MacUILib_uninit();}
