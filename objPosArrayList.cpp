@@ -133,3 +133,10 @@ objPos objPosArrayList::getElement(int index) const
 {
     return aList[index];
 }
+
+// new function used to update the locations of the randomly generated food
+void objPosArrayList::setElement(int index, int x, int y, char sym)
+{
+    aList[index].setObjPos(x, y, sym);
+    
+}

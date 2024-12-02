@@ -13,9 +13,6 @@ Player::Player(GameMechs* thisGMRef, Food* foodRef) // default constructor, crea
     playerPosList = new objPosArrayList();
     playerPosList->insertHead(objPos(xInitial, yInitial, 'M')); 
 
-    // code from prev iteration:
-    // playerPos = objPos();
-    // playerPos.setObjPos(xInitial, yInitial, '*');
 }
 
 Player::Player(GameMechs* thisGMRef, Food* foodRef, int size) // additional constructor, creates a snake of a custom length
@@ -58,7 +55,6 @@ Player& Player::operator= (const Player &p){
     return *this;
 }
 
-
 objPosArrayList* Player::getPlayerPos() const
 {
     return playerPosList; // returns reference to the playerPos arrray list
@@ -80,7 +76,7 @@ void Player::updatePlayerDir()
                 break;        
             case 'A':
             case 'a':
-                if(myDir != RIGHT && myDir != STOP){ // != STOP prevents snake from going into itself if directed left at beginning of game
+                if(myDir != RIGHT){ // != STOP prevents snake from going into itself if directed left at beginning of game
                     myDir = LEFT;
                 }
                 break;
@@ -115,6 +111,7 @@ void Player::movePlayer()
 
     switch(myDir)
     {
+        // implementing wraparound to keep player confined within borders
         case UP:
             headPosY--;
             if(headPosY < 1){
@@ -140,121 +137,20 @@ void Player::movePlayer()
             break;
     }
 
-    for(int i = 1; i < playerPosList->getSize(); i++){
-        if(playerPosList->getHeadElement().pos->x == playerPosList->getElement(i).pos->x && playerPosList->getHeadElement().pos->y == playerPosList->getElement(i).pos->y){
-            quit = true;
-            mainGameMechsRef->setExitTrue();
-            mainGameMechsRef->setLoseFlag();
-        }
+    if(checkSelfCollision()){
+        quit = true;
+        mainGameMechsRef->setLoseFlag();
+        mainGameMechsRef->setExitTrue();
     }
 
-    if(myDir != STOP && !quit){
-        if(!checkFoodConsumption()){
-            playerPosList->insertHead(objPos(headPosX, headPosY, playerPosList->getHeadElement().symbol));
-            playerPosList->removeTail();}
-        // } else {
-        //     foodReference->generateFood(playerPosList);
-        // }
+    if(myDir != STOP && !quit){ // !STOP prevents actions from auto-executing at beginning of game
+        playerPosList->insertHead(objPos(headPosX, headPosY, playerPosList->getHeadElement().symbol));
+        if(!checkFoodConsumption()){ // if this is true, increasePlayerlength will be run inside checkFoodConsumption and possibly additional tail elements will be inserted
+        // no need to remove tail if false bc we want to increase player length -> minimizes resources used in inserting AND removing -> prevents redundancy 
+            playerPosList->removeTail();
+        } 
     }
-
-    // if (checkFoodConsumption()) {
-    //     increasePlayerLength();
-    //     foodReference->generateFood(playerPosList->getHeadElement());  
-    // }
-
-    // switch(myDir)
-    // {
-    //     case UP:
-    //         if(playerPosList->getHeadElement().pos->y == 1){
-    //             playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x, yLimit, playerPosList->getHeadElement().symbol));
-    //             playerPosList->removeTail();
-    //         } else{
-    //             playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x, playerPosList->getHeadElement().pos->y - 1, playerPosList->getHeadElement().symbol));
-    //             playerPosList->removeTail();
-    //         }
-    //         break;
-    //     case LEFT:
-    //         if(playerPosList->getHeadElement().pos->x == 1){
-    //                 playerPosList->insertHead(objPos(xLimit, playerPosList->getHeadElement().pos->y, playerPosList->getHeadElement().symbol));
-    //                 playerPosList->removeTail();
-    //         } else{
-    //             playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x - 1, playerPosList->getHeadElement().pos->y, playerPosList->getHeadElement().symbol));
-    //             playerPosList->removeTail();
-    //         }
-    //         break;
-    //     case DOWN:
-    //         if(playerPosList->getHeadElement().pos->y == yLimit){
-    //             playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x, 1, playerPosList->getHeadElement().symbol));
-    //             playerPosList->removeTail();
-    //         } else{
-    //             playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x, playerPosList->getHeadElement().pos->y + 1, playerPosList->getHeadElement().symbol));
-    //             playerPosList->removeTail();
-    //         }
-    //         break;
-    //     case RIGHT:
-    //         if(playerPosList->getHeadElement().pos->x == xLimit){
-    //             playerPosList->insertHead(objPos(1, playerPosList->getHeadElement().pos->y, playerPosList->getHeadElement().symbol));
-    //             playerPosList->removeTail();
-    //         } else{
-    //             playerPosList->insertHead(objPos(playerPosList->getHeadElement().pos->x + 1, playerPosList->getHeadElement().pos->y, playerPosList->getHeadElement().symbol));
-    //             playerPosList->removeTail();
-    //         }
-    //         break;
-    //     case STOP:
-    //     default:
-    //         break;
-    // }  
-
-    // Code from prev iteration:
-    // switch(myDir)
-    // {
-    //     case UP:
-    //         playerPos.pos->y--;
-    //         if(playerPos.pos->y < 1){
-    //             playerPos.pos->y = yLimit;}
-    //         break;
-    //     case LEFT:
-    //         playerPos.pos->x--;
-    //         if(playerPos.pos->x < 1){
-    //             playerPos.pos->x = xLimit;}
-    //     case DOWN:
-    //         playerPos.pos->y++;
-    //         if (playerPos.pos->y > yLimit){
-    //             playerPos.pos->y = 1;}
-    //         break;
-    //     case RIGHT:
-    //         playerPos.pos->x++;
-    //         if(playerPos.pos->x > xLimit){
-    //             playerPos.pos->x = 1;}
-    //         break;
-    //     case STOP:
-    //         break;
-    //     default:
-    //         break;
-    // }  
-
 }
-
-// More methods to be added
-
-// bool Player::checkFoodConsumption(){
-// // {    objPos* foodlist = foodReference->getFoodPos();  // Get the list of food positions
-
-// //     for (int i = 0; i < foodlist->getSize(); ++i) {
-// //         objPos foodPos = foodlist->getElement(i);  // Get each food position
-
-//             if (playerPosList->getHeadElement().pos->x == foodReference->getFoodPos()->getHeadElement().pos->x &&
-//         playerPosList->getHeadElement().pos->y == foodReference->getFoodPos()->getHeadElement().pos->y) {
-//             // foodReference->generateFood(playerPosList);  // Generate new food
-//             // mainGameMechsRef->incrementScore();  // Increment the score
-//             return true;
-//         }
-//         return false;
-//     }
-
-// void Player::increasePlayerLength() {
-//     mainGameMechsRef->incrementScore();
-//     playerPosList->insertTail(playerPosList->getTailElement());}
 
 bool Player::checkFoodConsumption(){
     objPos playerPos = playerPosList->getHeadElement();
@@ -267,13 +163,12 @@ bool Player::checkFoodConsumption(){
                 mainGameMechsRef->incrementScore(10);  
             } else if (foodItem.symbol == 'A') {
                 mainGameMechsRef->incrementScore(50); 
-                increasePlayerLength(10); 
+                increasePlayerLength(5); 
             } else {
                 mainGameMechsRef->incrementScore(1); 
                 increasePlayerLength(1); 
             }
 
-            playerPosList->removeHead();  
             foodReference->generateFood(playerPosList);  
             return true; 
         }
@@ -281,9 +176,22 @@ bool Player::checkFoodConsumption(){
     return false;  
 }
 
-void Player::increasePlayerLength(int points) {
-    playerPosList->insertTail(playerPosList->getTailElement());
-    playerPosList->removeTail();
-
-    
+bool Player::checkSelfCollision(){
+    int headPosX = playerPosList->getHeadElement().pos->x;
+    int headPosY = playerPosList->getHeadElement().pos->y;
+    for(int i = 1; i < playerPosList->getSize(); i++){ // iterate through player array to check if the head element is at the same poisiton as a body element
+        if(headPosX == playerPosList->getElement(i).pos->x && headPosY == playerPosList->getElement(i).pos->y){
+            return true;
+        }
     }
+    return false;
+}
+
+void Player::increasePlayerLength(int points) {
+    for(int i = 0; i < points - 1; i++){ // insert one less element than the number of points into the tail
+    // one less because by inserting a head element, if the tail is not removed, the player will already increment by one
+        playerPosList->insertTail(playerPosList->getTailElement()); // insert into tail because we don't want to speed up player, only grow its body
+    }    
+}
+
+// More methods to be added

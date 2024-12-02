@@ -81,6 +81,12 @@ int objPosArrayList::getSize() const
     return listSize;
 }
 
+void objPosArrayList::setElement(int index, int x, int y, char sym)
+{
+    aList[index].setObjPos(x, y, sym);
+    
+}
+
 void objPosArrayList::insertHead(objPos thisPos)
 {
     if(listSize < arrayCapacity){
@@ -131,9 +137,4 @@ objPos objPosArrayList::getTailElement() const
 objPos objPosArrayList::getElement(int index) const
 {
     return aList[index];
-}
-
-void objPosArrayList::setElement(int index, objPos element)
-{
-    aList[index].symbol = element.symbol;
 }

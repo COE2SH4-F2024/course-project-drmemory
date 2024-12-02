@@ -29,6 +29,9 @@ class objPosArrayList
         objPos getHeadElement() const;
         objPos getTailElement() const;
         objPos getElement(int index) const;
+
+        //new function used to update the positions of the randomly generated food
+        void setElement(int index, int x, int y, char sym);
 };
 
 #endif

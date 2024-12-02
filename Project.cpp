@@ -117,8 +117,16 @@ void DrawScreen(void) {
     // int foodY = foodPos.pos->y;
     // char foodSymbol = foodPos.symbol;
 
-    // MacUILib_printf("Food Position: (%d, %d)\nHi Pookie :)\n", foodX, foodY);  
-
+    MacUILib_printf("Food Positions: (%d, %d), (%d, %d), (%d, %d), (%d, %d), (%d, %d)\n",
+        food->getFoodPos()->getElement(0).pos->x, food->getFoodPos()->getElement(0).pos->y, 
+        food->getFoodPos()->getElement(1).pos->x, food->getFoodPos()->getElement(1).pos->y,
+        food->getFoodPos()->getElement(2).pos->x, food->getFoodPos()->getElement(2).pos->y,
+        food->getFoodPos()->getElement(3).pos->x, food->getFoodPos()->getElement(3).pos->y,
+        food->getFoodPos()->getElement(4).pos->x, food->getFoodPos()->getElement(4).pos->y
+        );  
+    
+    MacUILib_printf("Player Positions: (%d, %d)\n", playerObject->getPlayerPos()->getHeadElement().pos->x, playerObject->getPlayerPos()->getHeadElement().pos->y);
+    
     for (int y = 0; y < Board_Len; ++y) {   
         for (int x = 0; x < Board_Width; ++x) { 
             occupied = false; 
@@ -165,12 +173,14 @@ void DrawScreen(void) {
 
     MacUILib_printf("Score: %d\n", gameMech->getScore());
 
-    if (gameMech->getExitFlagStatus()) {
-        MacUILib_printf("Exiting the game\n");
-    }
+    MacUILib_printf("Input '!' to Quit Game\n");
 
     if (gameMech->getLoseFlagStatus()) {
-        MacUILib_printf("You Lose! :(\n");
+        MacUILib_printf("COLLISION WITH TAIL DETECTED! YOU LOSE!!! :(\n\n");
+    }
+
+    if (gameMech->getExitFlagStatus()) {
+        MacUILib_printf("Exiting the game...\n");
     }
 
 }
