@@ -13,8 +13,7 @@ using namespace std;
 GameMechs* gameMech = nullptr;  
 
 Player* playerObject = nullptr;
-Food* food = nullptr; // did
-
+Food* food = nullptr; 
 
 bool exitFlag;
 
@@ -58,8 +57,7 @@ void Initialize(void)
 
     playerObject = new Player(gameMech, food);
     
-    food->generateFood(playerObject->getPlayerPos()); // praying it works now hardcoded location of board in generate food(WILL TRY TO FIX)
-    // food->generateFood(playerObject->getPlayerPos()->getHeadElement());
+    food->generateFood(playerObject->getPlayerPos());
     
     exitFlag = false;
 }
@@ -89,8 +87,6 @@ void RunLogic(void){
         exitFlag = true;  
     }
 
-    // gameMech->incrementScore();   
-
     playerObject->updatePlayerDir();
     playerObject->movePlayer();
 
@@ -102,20 +98,6 @@ void DrawScreen(void) {
     int Board_Width = gameMech->getBoardSizeX(); 
     int Board_Len = gameMech->getBoardSizeY();
     bool occupied;
-
-    // *** Code from prev iteration:
-
-    // int playerX = playerObject->getPlayerPos()->getHeadElement().pos->x;
-    // int playerY = playerObject->getPlayerPos()->getHeadElement().pos->y;
-    // char playerSymbol = playerObject->getPlayerPos().getSymbol();
-
-    // *** code from prev it ends here
-
-    // objPosArrayList* foodPos = food->getFoodPos();
-    
-    // int foodX = foodPos.pos->x;
-    // int foodY = foodPos.pos->y;
-    // char foodSymbol = foodPos.symbol;
 
     MacUILib_printf("Food Positions: (%d, %d), (%d, %d), (%d, %d), (%d, %d), (%d, %d)\n",
         food->getFoodPos()->getElement(0).pos->x, food->getFoodPos()->getElement(0).pos->y, 
@@ -155,18 +137,7 @@ void DrawScreen(void) {
             }
 
             if(!occupied){ // only print blank space " " if area is not occupied by another item - prevents overwriting
-
-                // hi pookie, for multiple food, if u have to use an array, i think using a 
-                // loop like the player one could work?
-                // if that is the case, we can get rid of the ifs in here and just leave it as 
-                // if(!occupied){
                 MacUILib_printf(" ");}
-
-                // if (x == foodX && y == foodY) { 
-                // MacUILib_printf("%c", foodSymbol);  
-                // } else {
-                // MacUILib_printf(" ");  
-                // }
         }
         MacUILib_printf("\n");
     }
@@ -193,8 +164,6 @@ void LoopDelay(void)
 
 void CleanUp(void)
 {
-    // MacUILib_clearScreen(); 
-
     // free up dynamically allocated memory
     delete gameMech;  
     delete playerObject; 
