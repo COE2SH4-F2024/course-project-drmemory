@@ -64,47 +64,44 @@ void Player::updatePlayerDir()
 {
     char playerInput = mainGameMechsRef->getInput();
 
-    if(playerInput != '0')
-    {
-        switch(playerInput) // matching input to WASD keys 
-        {                      
-            case 'W':
-            case 'w':
-                if(myDir != DOWN){ // prevents snake from going directly backwards
-                    myDir = UP;
-                }
-                break;        
-            case 'A':
-            case 'a':
-                if(myDir != RIGHT){ // != STOP prevents snake from going into itself if directed left at beginning of game
-                    myDir = LEFT;
-                }
-                break;
-            case 'S':
-            case 's':
-                if(myDir != UP){
-                    myDir = DOWN;
-                }
-                break;
-            case 'D':
-            case 'd':
-                if(myDir != LEFT){
-                    myDir = RIGHT;
-                }
-                break;
-            default:
-                break;
-        }
-        playerInput = '0';
+    switch(playerInput) // matching input to see if WASD keys pressed -> if yes, determines direction 
+    {                      
+        case 'W':
+        case 'w':
+            if(myDir != DOWN){ // prevents snake from going directly backwards into itself. Logic repeats for DOWN, RIGHT and LEFT cases
+                myDir = UP;
+            }
+            break;        
+        case 'A':
+        case 'a':
+            if(myDir != RIGHT){
+                myDir = LEFT;
+            }
+            break;
+        case 'S':
+        case 's':
+            if(myDir != UP){
+                myDir = DOWN;
+            }
+            break;
+        case 'D':
+        case 'd':
+            if(myDir != LEFT){
+                myDir = RIGHT;
+            }
+            break;
+        default: // for all other inputs, nothing happens
+            break;
     }
 }
 
 void Player::movePlayer()
 {objPos playerPos = playerPosList->getHeadElement();
-    // create variables for position limits -> used to implement wrap-around
+    // variables for position limits -> used to implement wrap-around
     // limit is size of board - 2 to prevent interference with boarder (index size - 1)
     int xLimit = mainGameMechsRef->getBoardSizeX() - 2;
     int yLimit = mainGameMechsRef->getBoardSizeY() - 2;
+
     int headPosX = playerPosList->getHeadElement().pos->x;
     int headPosY = playerPosList->getHeadElement().pos->y;
     bool quit = false; // prevents delay - time for setting exitflag and main program retreiving exitflag causes delay in terminating game. This flag prevents that
@@ -137,7 +134,7 @@ void Player::movePlayer()
             break;
     }
 
-    if(checkSelfCollision()){
+    if(checkSelfCollision()){ // if self collision occurs, message pops up indicating the player lost and exitFlag stops game from running
         quit = true;
         mainGameMechsRef->setLoseFlag();
         mainGameMechsRef->setExitTrue();
