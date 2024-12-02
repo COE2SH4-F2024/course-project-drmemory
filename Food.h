@@ -3,15 +3,16 @@
 #define FOOD_H
 #include "objPos.h" 
 #include "objPosArrayList.h" 
+#include "GameMechs.h"
 
 
 class Food {
 private:
     objPos foodPos;  
     objPosArrayList* Foodbucket;
-
+    GameMechs* mainGameMechsRef;
 public:
-    Food();  
+    Food(GameMechs* thisGMRef);
     ~Food();  
     // Food(const Food& other); 
     Food(const Food &f);

@@ -152,24 +152,24 @@ void Player::movePlayer()
     }
 }
 
-bool Player::checkFoodConsumption(){
-    objPos playerPos = playerPosList->getHeadElement();
-    objPosArrayList* foodList = foodReference->getFoodPos();
-    for (int i = 0; i < foodList->getSize(); ++i) {
+bool Player::checkFoodConsumption(){ 
+    objPos playerPos = playerPosList->getHeadElement(); //get the players current position which is the head
+    objPosArrayList* foodList = foodReference->getFoodPos(); 
+    for (int i = 0; i < foodList->getSize(); ++i) { //iterating through the food list to check if the player is at the same position as the the food item
         objPos foodItem = foodList->getElement(i);
 
-        if (playerPos.pos->x == foodItem.pos->x && playerPos.pos->y == foodItem.pos->y) {
-            if (foodItem.symbol == 'H') {
+        if (playerPos.pos->x == foodItem.pos->x && playerPos.pos->y == foodItem.pos->y) { // checking to see if the player position matches the food item position if so food is consumed
+            if (foodItem.symbol == 'H') { // if the food consumed is H then score is incremented by 10
                 mainGameMechsRef->incrementScore(10);  
-            } else if (foodItem.symbol == 'A') {
+            } else if (foodItem.symbol == 'A') { // if food consume is A then score is incrememted by A and tail lenght is  increased by 10
                 mainGameMechsRef->incrementScore(50); 
                 increasePlayerLength(5); 
-            } else {
+            } else { // else regular food score and tail is incremented by 1
                 mainGameMechsRef->incrementScore(1); 
                 increasePlayerLength(1); 
             }
 
-            foodReference->generateFood(playerPosList);  
+            foodReference->generateFood(playerPosList);   // regenerate food if consumed
             return true; 
         }
     }
@@ -194,4 +194,3 @@ void Player::increasePlayerLength(int points) {
     }    
 }
 
-// More methods to be added

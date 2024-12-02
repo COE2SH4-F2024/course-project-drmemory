@@ -6,20 +6,18 @@
 #include "objPosArrayList.h"
 
 
-Food::Food() {
+Food::Food(GameMechs* thisGMRef) { //default contructor
+    mainGameMechsRef=thisGMRef;  // 
     foodPos = objPos();
-    // foodPos.pos->x = 5;  // DID not know we had to do random position could be explainin the out of bounds goin to assing to arbitrary values(can i even spell arbitrary)
-    // foodPos.pos->y = 5;
-    // foodPos.symbol = 'J';
     Foodbucket = new objPosArrayList();  
 }
 
 
-Food::~Food() {
+Food::~Food() { //destructor 
     delete Foodbucket; // deletes foodbucket array to free up memory
 }
 
-Food& Food::operator=(const Food &f) {
+Food& Food::operator=(const Food &f) { // copy  assignment
     if (this != &f) {  // Prevent self-assignment
         // Clean up current resources
         delete Foodbucket;
@@ -37,20 +35,25 @@ Food& Food::operator=(const Food &f) {
     return *this;
 }
 
-void Food::generateFood(objPosArrayList* blockOff) {
- //hardcoding worked are we allowed to hardcode? fix this ask prof???
-    srand(time(NULL));  // Seed the random number generator
-    int x, y;
-    int x_size = 30;  
-    int y_size = 15;  
 
-    for (int i = 0; i < 5; i++) {  
-        bool overlap = true;
+
+
+
+void Food::generateFood(objPosArrayList* blockOff) {
+    srand(time(NULL));  //using to do random number generator
+    int x, y;
+    // using gamemechs poiinter to grab the size of the board 
+    int x_size = mainGameMechsRef->getBoardSizeX(); 
+    int y_size =mainGameMechsRef->getBoardSizeY();
+
+    for (int i = 0; i < 5; i++) {  // iterate through 5 food items
+        bool overlap = true; // indicator to check if there is overlap
         while (overlap) {
+            // randomize x between 28 and 13, to avoid generating food at the borders
             x = rand() % (x_size - 2) + 1;  
             y = rand() % (y_size - 2) + 1;  
-
-            for (int j = 0; j < blockOff->getSize(); ++j) {
+          // check if generated posiition overlaps with the blockoff and if overlap is found break from loop and look for a new posiition
+            for (int j = 0; j < blockOff->getSize(); ++j) {  //
                 if (x == blockOff->getElement(j).pos->x && y == blockOff->getElement(j).pos->y) {
                     overlap = false;
                     break;
@@ -64,7 +67,7 @@ void Food::generateFood(objPosArrayList* blockOff) {
                 }
             }
 
-            if (!overlap) {
+            if (!overlap) { // no overlap exit loop)
                 break;  
             }
         

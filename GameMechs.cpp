@@ -51,7 +51,6 @@ int GameMechs::getScore() const
  
 
 }
-
 void GameMechs::incrementScore(int size)
 {score+=size; 
 

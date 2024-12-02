@@ -26,6 +26,7 @@ class Player
 
         // objPos getPlayerPos() const; // Upgrade this in iteration 3.   
         objPosArrayList* getPlayerPos() const; 
+        objPosArrayList* foodList;
         void updatePlayerDir();
         void movePlayer();
 
