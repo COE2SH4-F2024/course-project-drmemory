@@ -99,8 +99,8 @@ void Player::movePlayer()
 {objPos playerPos = playerPosList->getHeadElement();
     // variables for position limits -> used to implement wrap-around
     // limit is size of board - 2 to prevent interference with boarder (index size - 1)
-    int xLimit = mainGameMechsRef->getBoardSizeX() - 2;
-    int yLimit = mainGameMechsRef->getBoardSizeY() - 2;
+    int xHeadLimit = mainGameMechsRef->getBoardSizeX() - 2;
+    int yHeadLimit = mainGameMechsRef->getBoardSizeY() - 2;
 
     int headPosX = playerPosList->getHeadElement().pos->x;
     int headPosY = playerPosList->getHeadElement().pos->y;
@@ -111,22 +111,22 @@ void Player::movePlayer()
         // implementing wraparound to keep player confined within borders
         case UP:
             headPosY--;
-            if(headPosY < 1){
-                headPosY = yLimit;}
+            if(headPosY < 1){ // if the head of the snake is at index of less than 1 (left border), wraps around to right before right border of game
+                headPosY = yHeadLimit;}
             break;
         case LEFT:
             headPosX--;
             if(headPosX < 1){
-                headPosX = xLimit;}
+                headPosX = xHeadLimit;}
             break;
         case DOWN:
             headPosY++;
-            if (headPosY > yLimit){
+            if (headPosY > yHeadLimit){
                 headPosY = 1;}
             break;
         case RIGHT:
             headPosX++;
-            if(headPosX > xLimit){
+            if(headPosX > xHeadLimit){
                 headPosX = 1;}
             break;
         case STOP:

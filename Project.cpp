@@ -10,12 +10,12 @@ using namespace std;
 
 #define DELAY_CONST 100000
 
+// pointers for reference in multiple files
 GameMechs* gameMech = nullptr;  
-
 Player* playerObject = nullptr;
 Food* food = nullptr; 
 
-bool exitFlag;
+bool exitFlag; // if true, stops game from running
 
 void Initialize(void);
 void GetInput(void);
@@ -52,12 +52,12 @@ void Initialize(void)
 
     input = 0;
 
-    gameMech = new GameMechs(30,15);
+    gameMech = new GameMechs(30,15); // creating board of desired size
     food = new Food(gameMech);
 
-    playerObject = new Player(gameMech, food);
+    playerObject = new Player(gameMech, food); // 
     
-    food->generateFood(playerObject->getPlayerPos());
+    food->generateFood(playerObject->getPlayerPos()); //generating food
     
     exitFlag = false;
 }
@@ -70,9 +70,6 @@ void GetInput(void)
     }
 
     gameMech->setInput(input);
-
-
-
 
 }
 
@@ -125,8 +122,8 @@ void DrawScreen(void) {
                 }
             }
 
-            if(!occupied){
-                for(int i = 0; i < food->getFoodPos()->getSize(); i++){
+            if(!occupied){ //!occupied flag prevents player character from being covered/overwritten by food
+                for(int i = 0; i < food->getFoodPos()->getSize(); i++){ //iterate list the size of foodbucket
                     if(x == food->getFoodPos()->getElement(i).pos->x && y == food->getFoodPos()->getElement(i).pos->y){
                         MacUILib_printf("%c", food->getFoodPos()->getElement(i).symbol);
                         occupied = true;
@@ -141,10 +138,14 @@ void DrawScreen(void) {
         MacUILib_printf("\n");
     }
 
+    //Some information to help players navigate the game
     MacUILib_printf("Score: %d\n", gameMech->getScore());
+    MacUILib_printf("Common Food: J | Speical Foods: A, H\n\n");
 
-    MacUILib_printf("Input '!' to Quit Game\n");
-    
+    MacUILib_printf("Snake Length: %d\n\n", playerObject->getPlayerPos()->getSize());
+
+    MacUILib_printf("Controls: W-UP,S-DOWN-D-RIGHT,A-LEFT\n");
+    MacUILib_printf("Input '!' to Quit Game\n\n");
 
     if (gameMech->getLoseFlagStatus()) {
         MacUILib_printf("COLLISION WITH TAIL DETECTED! YOU LOSE!!! :(\n\n");
@@ -152,17 +153,13 @@ void DrawScreen(void) {
 
     if (gameMech->getExitFlagStatus()) {
         MacUILib_printf("Exiting the game...\n");
-    }
-        MacUILib_printf("Snake Length: %d\n", playerObject->getPlayerPos()->getSize());
-        MacUILib_printf("Controls: W-UP,S-DOWN-D-RIGHT,A-LEFT");
-
+    }        
 }
 
 void LoopDelay(void)
 {
     MacUILib_Delay(DELAY_CONST);
 }
-
 
 void CleanUp(void)
 {

@@ -12,7 +12,6 @@ Food::Food(GameMechs* thisGMRef) { //default contructor
     Foodbucket = new objPosArrayList();  
 }
 
-
 Food::~Food() { //destructor 
     delete Foodbucket; // deletes foodbucket array to free up memory
 }
@@ -35,10 +34,6 @@ Food& Food::operator=(const Food &f) { // copy  assignment
     return *this;
 }
 
-
-
-
-
 void Food::generateFood(objPosArrayList* blockOff) {
     srand(time(NULL));  //using to do random number generator
     int x, y;
@@ -52,8 +47,8 @@ void Food::generateFood(objPosArrayList* blockOff) {
             // randomize x between 28 and 13, to avoid generating food at the borders
             x = rand() % (x_size - 2) + 1;  
             y = rand() % (y_size - 2) + 1;  
-          // check if generated posiition overlaps with the blockoff and if overlap is found break from loop and look for a new posiition
-            for (int j = 0; j < blockOff->getSize(); ++j) {  //
+            // check if generated posiition overlaps with the blockoff and if overlap is found break from loop and look for a new posiition
+            for (int j = 0; j < blockOff->getSize(); ++j) { 
                 if (x == blockOff->getElement(j).pos->x && y == blockOff->getElement(j).pos->y) {
                     overlap = false;
                     break;
@@ -71,24 +66,24 @@ void Food::generateFood(objPosArrayList* blockOff) {
                 break;  
             }
         
-        // Updating values of foodPos bc to use insert tail function, we need to use a variable of type objPos 
-        foodPos.pos->x = x;
-        foodPos.pos->y = y;
-        if (i < 4) {  
-            foodPos.symbol = 'J';
-        } else {  
-            foodPos.symbol = (rand() % 2 == 0) ? 'A' : 'H';
-        }
+            // Updating values of foodPos bc to use insert tail function, we need to use a variable of type objPos 
+            foodPos.pos->x = x;
+            foodPos.pos->y = y;
+            if (i < 4) {  
+                foodPos.symbol = 'J';
+            } else {  
+                foodPos.symbol = (rand() % 2 == 0) ? 'A' : 'H';
+            }
 
-        if(Foodbucket->getSize() <= i){ // we want a list of 5 elements: insert an additional if the list is equal to or smaler than the current iteration
-        // this is bc in iteration 0, the first element in list is focus: if list size is 0, there is no element in list
-            Foodbucket->insertTail(foodPos);
-        } else {
-            Foodbucket->setElement(i, x, y, foodPos.symbol); // update positions of element in focus
-            // we do NOT want to expand list bc we ONLY want FIVE food elements on screen at a time
-        }
-         
-        overlap=false;
+            if(Foodbucket->getSize() <= i){ // we want a list of 5 elements: insert an additional if the list is equal to or smaler than the current iteration
+            // this is bc in iteration 0, the first element in list is focus: if list size is 0, there is no element in list
+                Foodbucket->insertTail(foodPos);
+            } else {
+                Foodbucket->setElement(i, x, y, foodPos.symbol); // update positions of element in focus
+                // we do NOT want to expand list bc we ONLY want FIVE food elements on screen at a time
+            }
+            
+            overlap=false;
         }
     }
 }

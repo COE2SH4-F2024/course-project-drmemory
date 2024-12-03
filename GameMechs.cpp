@@ -1,6 +1,6 @@
 #include "GameMechs.h"
 
-
+// constructor
 GameMechs::GameMechs()
 {boardSizeX = 30;
 boardSizeY = 15;
@@ -8,42 +8,33 @@ score = 0;
 exitFlag = false;
 loseFlag = false;
 input = 0;
-
-
-
-
 }
-
  
-
+// additional constructor
 GameMechs::GameMechs(int boardX, int boardY)
-{ boardSizeX = boardX;
+{boardSizeX = boardX;
 boardSizeY= boardY;
 score = 0;
 exitFlag = false;
 loseFlag = false;
-input = 0;
-
-
-    
+input = 0;   
 }
 
+GameMechs::~GameMechs()
+{// destructor not needed
+}
 
 bool GameMechs::getExitFlagStatus() const
-{    return exitFlag;
-
-
+{return exitFlag;
 }
 
 bool GameMechs::getLoseFlagStatus() const
 {return loseFlag;
-
 }
     
 
 char GameMechs::getInput() const
 {return input;
-
 }
 
 int GameMechs::getScore() const
@@ -52,44 +43,32 @@ int GameMechs::getScore() const
 
 }
 void GameMechs::incrementScore(int size)
-{score+=size; 
-
-    
+{score+=size;     
 }
 
 int GameMechs::getBoardSizeX() const
 { return boardSizeX;
-
 }
 
 int GameMechs::getBoardSizeY() const
 {return boardSizeY;
-
 }
 
 
 void GameMechs::setExitTrue()
 {exitFlag = true;  
-
 }
 
 void GameMechs::setLoseFlag()
-{loseFlag = true;  
-    
+{loseFlag = true;     
 }
 
 void GameMechs::setInput(char this_input)
 {input = this_input;  
-
 }
 
 void GameMechs::clearInput()
 {input = 0;
-
-}
-
-GameMechs::~GameMechs()
-{
 }
 
 
