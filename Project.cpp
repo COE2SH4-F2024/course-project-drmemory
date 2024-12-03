@@ -53,7 +53,7 @@ void Initialize(void)
     input = 0;
 
     gameMech = new GameMechs(30,15);
-    food = new Food();
+    food = new Food(gameMech);
 
     playerObject = new Player(gameMech, food);
     
@@ -106,9 +106,9 @@ void DrawScreen(void) {
         food->getFoodPos()->getElement(3).pos->x, food->getFoodPos()->getElement(3).pos->y,
         food->getFoodPos()->getElement(4).pos->x, food->getFoodPos()->getElement(4).pos->y
         );  
-    
+
     MacUILib_printf("Player Positions: (%d, %d)\n", playerObject->getPlayerPos()->getHeadElement().pos->x, playerObject->getPlayerPos()->getHeadElement().pos->y);
-    
+
     for (int y = 0; y < Board_Len; ++y) {   
         for (int x = 0; x < Board_Width; ++x) { 
             occupied = false; 
@@ -118,7 +118,6 @@ void DrawScreen(void) {
             }
 
             for(int i = 0; i < playerObject->getPlayerPos()->getSize(); i++){ // iterate through body of snake to account for every element
-
                 if(x == playerObject->getPlayerPos()->getElement(i).pos->x && y == playerObject->getPlayerPos()->getElement(i).pos->y){
                     MacUILib_printf("%c", playerObject->getPlayerPos()->getElement(i).symbol);
                     occupied = true; // set occupied flag to true to prevent blank spaced " " from overwriting player
@@ -145,6 +144,7 @@ void DrawScreen(void) {
     MacUILib_printf("Score: %d\n", gameMech->getScore());
 
     MacUILib_printf("Input '!' to Quit Game\n");
+    
 
     if (gameMech->getLoseFlagStatus()) {
         MacUILib_printf("COLLISION WITH TAIL DETECTED! YOU LOSE!!! :(\n\n");
@@ -153,6 +153,8 @@ void DrawScreen(void) {
     if (gameMech->getExitFlagStatus()) {
         MacUILib_printf("Exiting the game...\n");
     }
+        MacUILib_printf("Snake Length: %d\n", playerObject->getPlayerPos()->getSize());
+        MacUILib_printf("Controls: W-UP,S-DOWN-D-RIGHT,A-LEFT");
 
 }
 
