@@ -17,23 +17,6 @@ Food::~Food() { //destructor
     delete Foodbucket; // deletes foodbucket array to free up memory
 }
 
-Food& Food::operator=(const Food &f) { // copy  assignment
-    if (this != &f) {  // Prevent self-assignment
-        // Clean up current resources
-        delete Foodbucket;
-
-        // Copy the simple members
-        foodPos.pos->x = f.foodPos.pos->x;
-        foodPos.pos->y = f.foodPos.pos->y;
-        foodPos.symbol = f.foodPos.symbol;
-
-        Foodbucket = new objPosArrayList();
-        for (int i = 0; i < f.Foodbucket->getSize(); i++) {
-            Foodbucket->insertTail(f.Foodbucket->getElement(i));
-        }
-    }
-    return *this;
-}
 
 
 
@@ -42,7 +25,7 @@ Food& Food::operator=(const Food &f) { // copy  assignment
 void Food::generateFood(objPosArrayList* blockOff) {
     srand(time(NULL));  //using to do random number generator
     int x, y;
-    // using gamemechs poiinter to grab the size of the board 
+    // using gamemechs pointer to grab the size of the board 
     int x_size = mainGameMechsRef->getBoardSizeX(); 
     int y_size =mainGameMechsRef->getBoardSizeY();
 
@@ -52,17 +35,17 @@ void Food::generateFood(objPosArrayList* blockOff) {
             // randomize x between 28 and 13, to avoid generating food at the borders
             x = rand() % (x_size - 2) + 1;  
             y = rand() % (y_size - 2) + 1;  
-          // check if generated posiition overlaps with the blockoff and if overlap is found break from loop and look for a new posiition
+          // check to see if generated posiition overlaps with the player position(blockoff position) 
             for (int j = 0; j < blockOff->getSize(); ++j) {  //
                 if (x == blockOff->getElement(j).pos->x && y == blockOff->getElement(j).pos->y) {
-                    overlap = false;
+                    overlap = false; //if overlap is found break from loop and look for a new posiition
                     break;
                 }
             }
-
+            // check if the generated position overlaps with any existing food
             for (int k = 0; k < Foodbucket->getSize(); k++) {
                 if (x == Foodbucket->getElement(k).pos->x && y == Foodbucket->getElement(k).pos->y) {
-                    overlap = false;
+                    overlap = false; //if overlap found break from loop
                     break;
                 }
             }
